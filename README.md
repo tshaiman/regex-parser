@@ -17,6 +17,6 @@ for example for the input "abc" the following is reg-ex match :
 "a+c"
 
 but 
-"a*d*" is not a match.
+"a*d" is not a match.
 
 The solution should not care about performance , run-time or memory .
