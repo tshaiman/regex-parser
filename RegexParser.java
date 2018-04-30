@@ -21,8 +21,8 @@ public class RegexParser {
         assertThat("isMatch(\"abc\",\"ab+\") should return true", isMatch("abc", "ab+"));
         assertThat("isMatch(\"abc\",\"a*c\") should return true", isMatch("abc", "a*c"));
         assertThat("isMatch(\"abc\",\"a+c\") should return true", isMatch("abc", "a+c"));
-        assertThat("isMatch(\"abc\",\"a+\") should return true", !isMatch("abc", "a+"));
-        assertThat("isMatch(\"abc\",\"a*d*\") should return true", !isMatch("abc", "a*d*"));
+        assertThat("!isMatch(\"abc\",\"a+\") should return true", !isMatch("abc", "a+"));
+        assertThat("!isMatch(\"abc\",\"a*d*\") should return true", !isMatch("abc", "a*d*"));
         assertThat("isMatch(\"abc\",\"a**\") should return true", isMatch("abc", "a**"));
         assertThat("isMatch(\"abc\",\"a*c*\") should return true", isMatch("abc", "a*c*"));
         assertThat("isMatch(\"abc\",\"a*c+\") should return true", isMatch("abc", "a*c+"));
@@ -32,14 +32,19 @@ public class RegexParser {
         assertThat("isMatch(\"abcdefg\",\"*\") should return true", isMatch("abcdefg", "*"));
         assertThat("isMatch(\"\",\"+\") should return true", isMatch("", "+"));
         assertThat("isMatch(\"a\",\"+\") should return true", isMatch("a", "+"));
-        assertThat("isMatch(\"ab\",\"+\") should return true", !isMatch("ab", "+"));
+        assertThat("!isMatch(\"ab\",\"+\") should return true", !isMatch("ab", "+"));
 
         assertThat("isMatch(\"abc\",\"ab+c\") should return true", isMatch("abc", "ab+c"));
         assertThat("isMatch(\"abc\",\"+abc\") should return true", isMatch("abc", "+abc"));
         assertThat("isMatch(\"abc\",\"abc+\") should return true", isMatch("abc", "abc+"));
         assertThat("isMatch(\"abc\",\"a+bc\") should return true", isMatch("abc", "a+bc"));
-        assertThat("isMatch(\"abc\",\"a+bcd\") should return true", !isMatch("abc", "a+bcd"));
-        assertThat("isMatch(\"abc\",\"abc+d\") should return true", !isMatch("abc", "abc+d"));
+        assertThat("!isMatch(\"abc\",\"a+bcd\") should return true", !isMatch("abc", "a+bcd"));
+        assertThat("!isMatch(\"abc\",\"abc+d\") should return true", !isMatch("abc", "abc+d"));
+
+        assertThat("isMatch(\"abc\",\"+bc\") should return true", isMatch("abc", "+bc"));
+        assertThat("isMatch(\"abc\",\"*bc\") should return true", isMatch("abc", "*bc"));
+        assertThat("isMatch(\"abc\",\"*c\") should return true", isMatch("abc", "*c"));
+        assertThat("!isMatch(\"abc\",\"*d\") should return true", !isMatch("abc", "*d"));
 
 
 
