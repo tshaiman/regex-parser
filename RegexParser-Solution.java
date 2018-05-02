@@ -1,5 +1,5 @@
-package com.interviewQuestions;
 
+package com.interviewQuestions;
 import java.util.StringTokenizer;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -46,7 +46,11 @@ public class RegexParser {
         assertThat("isMatch(\"abc\",\"*c\") should return true", isMatch("abc", "*c"));
         assertThat("!isMatch(\"abc\",\"*d\") should return true", !isMatch("abc", "*d"));
 
-
+        
+        assertThat("isMatch(\"abdbcdd\",\"**++abdbc+dd++**\") should return true", isMatch("abdbcdd", "**++abdbc+dd++**"));
+        assertThat("isMatch(\"ac\",\"a******c\") should return true", isMatch("ac", "a******c"));
+        assertThat("isMatch(\"ac\",\"**a***c**\") should return true", isMatch("ac", "**a***c**"));
+        assertThat("isMatch(\"abcdef\",\"a*\") should return true", isMatch("abcdef", "*+a***b++c+++*d++e++f**"));
 
 
         System.out.println("All tests passed successfully");
@@ -73,7 +77,7 @@ public class RegexParser {
 
             case ASTERIX : {
                 if(regLen == 1) return true;// '*' => Match ALL
-                return isMatch(input.substring(1), regex.substring(1)) || isMatch(input.substring(1),regex);
+                return isMatch(input.substring(1), regex.substring(1)) || isMatch(input.substring(1),regex) || isMatch(input,regex.substring(1));
             }
 
             case PLUS : {
