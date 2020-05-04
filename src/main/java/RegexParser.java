@@ -1,6 +1,5 @@
-
-package com.interviewQuestions;
-import java.util.StringTokenizer;
+import org.apache.commons.lang3.StringUtils;
+import org.hamcrest.MatcherAssert;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -9,10 +8,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * possible regex values are [a-z], +, *, where: + is zero or one character and * is zero to any number of characters
  */
 public class RegexParser {
-    static final  char PLUS = '+';
-    static final  char ASTERIX = '*';
+    static final char PLUS = '+';
+    static final char ASTERIX = '*';
+    static final char[] letters = "abcdefghijklmnopqrstuvwxyz".toCharArray();
 
     public static void main(String[] args) {
+
         assertThat("isMatch(\"ab\",\"a+\") should return true", isMatch("ab", "a+"));
         assertThat("isMatch(\"abc\",\"a*\") should return true", isMatch("abc", "a*"));
         assertThat("isMatch(\"abc\",\"ab*\") should return true", isMatch("abc", "ab*"));
@@ -46,7 +47,7 @@ public class RegexParser {
         assertThat("isMatch(\"abc\",\"*c\") should return true", isMatch("abc", "*c"));
         assertThat("!isMatch(\"abc\",\"*d\") should return true", !isMatch("abc", "*d"));
 
-        
+
         assertThat("isMatch(\"abdbcdd\",\"**++abdbc+dd++**\") should return true", isMatch("abdbcdd", "**++abdbc+dd++**"));
         assertThat("isMatch(\"ac\",\"a******c\") should return true", isMatch("ac", "a******c"));
         assertThat("isMatch(\"ac\",\"**a***c**\") should return true", isMatch("ac", "**a***c**"));
@@ -55,6 +56,7 @@ public class RegexParser {
 
         System.out.println("All tests passed successfully");
     }
+
     /**
      * @param input - a string input containing characters from a to z
      * @param regex - a regex containing a to z, +s and *s
@@ -66,42 +68,34 @@ public class RegexParser {
         int inputLen = input.length();
 
         //empty Cases
-        if(inputLen == 0)
-            return isAllSpecial(regex);
+        if (inputLen == 0)
+            return !StringUtils.containsAny(regex, letters);
 
-        if(regLen == 0)
+        if (regLen == 0)
             return false; //because inputLen is not empty
 
         char regCh = regex.charAt(0);
         switch (regCh) {
 
-            case ASTERIX : {
-                if(regLen == 1) return true;// '*' => Match ALL
-                return isMatch(input.substring(1), regex.substring(1)) || isMatch(input.substring(1),regex) || isMatch(input,regex.substring(1));
+            case ASTERIX: {
+                return isMatch(input.substring(1), regex.substring(1))          //case "1"
+                        || isMatch(input.substring(1), regex)                   //case "0"
+                        || isMatch(input, regex.substring(1));                  //case "N"
             }
 
-            case PLUS : {
-                if(regLen == 1) return inputLen <=1;// '+' => Match 0 , or 1 character only
-                return isMatch(input.substring(1), regex.substring(1)) || isMatch(input,regex.substring(1));
+            case PLUS: {
+                return isMatch(input.substring(1), regex.substring(1))          //case "1"
+                        || isMatch(input, regex.substring(1));                  //case "0"
             }
             //REG EX starts with letter
             default: {
-                if(regex.charAt(0) != input.charAt(0))
+                if (regex.charAt(0) != input.charAt(0))
                     return false;
-                return isMatch(input.substring(1),regex.substring(1));
+                return isMatch(input.substring(1), regex.substring(1));
             }
         }
 
     }
-
-    private static boolean isAllSpecial(String regex) {
-        for(char ch : regex.toCharArray()) {
-            if (ch != PLUS && ch != ASTERIX )
-                return false;
-        }
-        return true;
-    }
-
 
 
 }
